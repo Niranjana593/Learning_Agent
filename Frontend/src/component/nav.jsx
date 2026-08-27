@@ -33,19 +33,7 @@ const Nav = () => {
             to="/"
             className="flex items-center gap-5 group focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg p-1 transition-transform duration-200 hover:scale-[1.02]"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center shadow-md shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-all duration-300">
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2.2"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2 17l10 5 10-5" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2 12l10 5 10-5" />
-              </svg>
-            </div>
+            <img className="h-10" src="/logo.png" alt="logo" />
             <span className="font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-purple-300 text-lg sm:text-xl uppercase">
               Smart Learning Agent
             </span>

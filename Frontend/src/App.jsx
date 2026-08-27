@@ -8,6 +8,8 @@ import ProfilePreview from './component/profilePreview';
 import StrategyPreview from './component/strategyPreview';
 import CtaSection from './component/ctaSection';
 import HowItWorks from './component/howItWorks';
+import About from './component/about';
+import Research from './component/research';
 import Footer from './component/footer';
 
 // Helper component to scroll to top of page on route change
@@ -44,6 +46,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/research" element={<Research />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
         <Footer />

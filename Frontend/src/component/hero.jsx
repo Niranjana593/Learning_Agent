@@ -20,15 +20,13 @@ const Hero = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto">
           
-          {/* AI Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-purple-500/30 text-purple-300 text-xs sm:text-sm font-semibold tracking-wide shadow-inner mb-6 sm:mb-8 backdrop-blur-md">
-            <span className="flex h-2 w-2 rounded-full bg-purple-400 animate-pulse" />
-            <span className="bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent">
-              AI Cognitive Learning Engine 2.0
-            </span>
-            <svg className="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+          {/* Logo on Home Page */}
+          <div className="flex justify-center mb-6 sm:mb-8">
+            <img 
+              className="h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300" 
+              src="/logo.png" 
+              alt="Smart Learning Agent Logo" 
+            />
           </div>
 
           {/* Main Heading */}

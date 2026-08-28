@@ -12,6 +12,8 @@ import About from './component/about';
 import Research from './component/research';
 import GetStartedGuard from './component/GetStartedGuard';
 import UserProfileForm from './component/UserProfileForm';
+import AssessmentPage from './component/AssessmentPage';
+import DashboardGuard from './component/DashboardGuard';
 import Footer from './component/footer';
 
 // Helper component to scroll to top of page on route change
@@ -52,6 +54,9 @@ function App() {
           <Route path="/research" element={<Research />} />
           <Route path="/get-started" element={<GetStartedGuard />} />
           <Route path="/profile-form" element={<UserProfileForm />} />
+          <Route path="/start-assessment" element={<AssessmentPage />} />
+          <Route path="/assessment" element={<AssessmentPage />} />
+          <Route path="/dashboard" element={<DashboardGuard />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
         <Footer />

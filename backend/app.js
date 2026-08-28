@@ -102,6 +102,90 @@ app.post('/api/users/profile', async (req, res) => {
   }
 });
 
+// Check dashboard assessment completion status
+app.get('/api/dashboard/status', async (req, res) => {
+  const { email } = req.query;
+  if (!email) {
+    return res.status(400).json({ success: false, message: 'Email query parameter is required' });
+  }
+
+  try {
+    let result = await query('SELECT * FROM dashboard WHERE user_email = $1', [email]);
+    
+    // If user record doesn't exist in dashboard table, create it with defaults (false)
+    if (result.rows.length === 0) {
+      const insertQuery = `
+        INSERT INTO dashboard (user_email, n_back_test, hopfield_test, hebbian_test)
+        VALUES ($1, false, false, false)
+        RETURNING *;
+      `;
+      result = await query(insertQuery, [email]);
+    }
+
+    const row = result.rows[0];
+    const allCompleted = Boolean(row.n_back_test && row.hopfield_test && row.hebbian_test);
+
+    return res.json({
+      success: true,
+      user_email: row.user_email,
+      n_back_test: row.n_back_test,
+      hopfield_test: row.hopfield_test,
+      hebbian_test: row.hebbian_test,
+      allCompleted
+    });
+  } catch (err) {
+    console.error('Error fetching dashboard status:', err);
+    return res.status(500).json({ success: false, message: 'Failed to fetch dashboard status', error: err.message });
+  }
+});
+
+// Update test completion status in dashboard table
+app.post('/api/dashboard/update', async (req, res) => {
+  const { email, test_name, completed } = req.body;
+
+  if (!email || !test_name) {
+    return res.status(400).json({ success: false, message: 'email and test_name are required' });
+  }
+
+  const validTests = ['n_back_test', 'hopfield_test', 'hebbian_test'];
+  if (!validTests.includes(test_name)) {
+    return res.status(400).json({ success: false, message: `Invalid test_name. Must be one of: ${validTests.join(', ')}` });
+  }
+
+  const isCompleted = completed !== undefined ? Boolean(completed) : true;
+
+  try {
+    const updateQuery = `
+      INSERT INTO dashboard (user_email, ${test_name}, updated_at)
+      VALUES ($1, $2, NOW())
+      ON CONFLICT (user_email) DO UPDATE SET
+        ${test_name} = EXCLUDED.${test_name},
+        updated_at = NOW()
+      RETURNING *;
+    `;
+
+    const result = await query(updateQuery, [email, isCompleted]);
+    const row = result.rows[0];
+    const allCompleted = Boolean(row.n_back_test && row.hopfield_test && row.hebbian_test);
+
+    console.log(`✅ Dashboard test status updated for ${email}: ${test_name} = ${isCompleted}`);
+    return res.json({
+      success: true,
+      message: `${test_name} updated successfully`,
+      dashboard: {
+        user_email: row.user_email,
+        n_back_test: row.n_back_test,
+        hopfield_test: row.hopfield_test,
+        hebbian_test: row.hebbian_test,
+        allCompleted
+      }
+    });
+  } catch (err) {
+    console.error('Error updating dashboard status:', err);
+    return res.status(500).json({ success: false, message: 'Failed to update test status', error: err.message });
+  }
+});
+
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`)
 })

@@ -46,11 +46,26 @@ export const initDatabase = async () => {
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `;
+
+  const createDashboardTableQuery = `
+    CREATE TABLE IF NOT EXISTS dashboard (
+      id SERIAL PRIMARY KEY,
+      user_email VARCHAR(255) NOT NULL UNIQUE,
+      n_back_test BOOLEAN DEFAULT FALSE,
+      hopfield_test BOOLEAN DEFAULT FALSE,
+      hebbian_test BOOLEAN DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
+
   try {
     await pool.query(createUsersTableQuery);
     console.log('✅ PostgreSQL "users" table initialized successfully.');
+    await pool.query(createDashboardTableQuery);
+    console.log('✅ PostgreSQL "dashboard" table initialized successfully.');
   } catch (err) {
-    console.error('❌ Failed to initialize "users" table:', err.message);
+    console.error('❌ Failed to initialize database tables:', err.message);
   }
 };
 

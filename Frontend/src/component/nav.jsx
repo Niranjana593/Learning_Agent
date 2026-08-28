@@ -1,9 +1,18 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import {
+  SignInButton,
+  UserButton,
+  useClerk,
+  useUser,
+} from '@clerk/react';
 
 const Nav = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { signOut } = useClerk();
+  const { isSignedIn, isLoaded, user } = useUser();
 
   // Navigation item definitions
   const navItems = [
@@ -13,14 +22,14 @@ const Nav = () => {
     { name: 'Research', path: '/research' },
   ];
 
-  const authActions = {
-    login: { name: 'Login', path: '/login' },
-    getStarted: { name: 'Get Started', path: '/get-started' }
-  };
-
   const isActive = (path) => {
     if (path === '/') return location.pathname === '/' || location.pathname === '/home';
     return location.pathname.startsWith(path);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
   };
 
   return (
@@ -61,17 +70,35 @@ const Nav = () => {
 
           {/* Action Buttons (Desktop) */}
           <div className="hidden md:flex items-center gap-4">
+            {!isLoaded ? (
+              <div className="w-20 h-8 bg-slate-800/50 animate-pulse rounded-lg" />
+            ) : isSignedIn ? (
+              <div className="flex items-center gap-4">
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="px-4 py-2 text-sm font-semibold text-slate-300 hover:text-white border border-slate-700 hover:border-red-500/50 hover:bg-red-500/10 rounded-lg transition-all duration-200 cursor-pointer"
+                >
+                  Sign Out
+                </button>
+                <UserButton />
+              </div>
+            ) : (
+              <SignInButton mode="modal">
+                <button
+                  type="button"
+                  className="px-4 py-2 text-sm font-semibold text-slate-200 hover:text-white border border-slate-700 hover:border-slate-500 rounded-lg transition-all duration-200 hover:bg-slate-800/60 cursor-pointer"
+                >
+                  Sign In
+                </button>
+              </SignInButton>
+            )}
+
             <Link
-              to={authActions.login.path}
-              className="px-4 py-2 text-sm font-semibold text-slate-200 hover:text-white border border-slate-700 hover:border-slate-500 rounded-lg transition-all duration-200 hover:bg-slate-800/60"
-            >
-              {authActions.login.name}
-            </Link>
-            <Link
-              to={authActions.getStarted.path}
+              to="/get-started"
               className="px-5 py-2 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 rounded-lg shadow-md shadow-purple-600/30 hover:shadow-purple-600/50 transform hover:-translate-y-0.5 transition-all duration-200"
             >
-              {authActions.getStarted.name}
+              Get Started
             </Link>
           </div>
 
@@ -115,19 +142,46 @@ const Nav = () => {
             </div>
 
             <div className="pt-3 border-t border-slate-800/80 flex flex-col gap-2">
+              {!isLoaded ? (
+                <div className="w-full h-10 bg-slate-900/50 animate-pulse rounded-lg" />
+              ) : isSignedIn ? (
+                <div className="flex items-center justify-between px-3 py-2 bg-slate-900/80 rounded-lg border border-slate-800">
+                  <div className="flex items-center gap-3">
+                    <UserButton />
+                    <span className="text-sm font-medium text-slate-200 truncate max-w-[150px]">
+                      {user?.fullName || user?.primaryEmailAddress?.emailAddress || 'User Account'}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await signOut();
+                      setMobileMenuOpen(false);
+                      navigate('/');
+                    }}
+                    className="px-3 py-1.5 text-xs font-semibold text-red-400 hover:text-white border border-red-500/30 hover:border-red-500/80 hover:bg-red-500/20 rounded-md transition-all cursor-pointer"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <SignInButton mode="modal">
+                  <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full text-center px-4 py-2 text-sm font-semibold text-slate-200 border border-slate-700 hover:border-slate-500 rounded-lg bg-slate-900/50 hover:bg-slate-800/60 transition-all cursor-pointer"
+                  >
+                    Sign In
+                  </button>
+                </SignInButton>
+              )}
+
               <Link
-                to={authActions.login.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center px-4 py-2 text-sm font-semibold text-slate-200 border border-slate-700 hover:border-slate-500 rounded-lg bg-slate-900/50 hover:bg-slate-800/60 transition-all"
-              >
-                {authActions.login.name}
-              </Link>
-              <Link
-                to={authActions.getStarted.path}
+                to="/get-started"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full text-center px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-lg shadow-md shadow-purple-600/30 transition-all"
               >
-                {authActions.getStarted.name}
+                Get Started
               </Link>
             </div>
           </div>
@@ -138,3 +192,4 @@ const Nav = () => {
 };
 
 export default Nav;
+

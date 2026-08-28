@@ -1,6 +1,6 @@
 const Hero = () => {
   return (
-    <section className="relative overflow-hidden pt-12 pb-20 md:pt-20  bg-slate-950 text-slate-100">
+    <section className="relative overflow-hidden min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] py-8 sm:py-12 md:py-16 bg-slate-950 text-slate-100 flex items-center justify-center">
       {/* Background Decorative Gradients & Mesh */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none overflow-hidden z-0">
         <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px]" />
@@ -17,20 +17,20 @@ const Hero = () => {
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-auto w-full">
         <div className="text-center max-w-4xl mx-auto">
           
           {/* Logo on Home Page */}
-          <div className="flex justify-center mb-6 sm:mb-8">
+          <div className="flex justify-center mb-4 sm:mb-6">
             <img 
-              className="h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300" 
+              className="h-12 sm:h-16 md:h-20 w-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300" 
               src="/logo.png" 
               alt="Smart Learning Agent Logo" 
             />
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-slate-100 leading-[1.1] mb-6">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-100 leading-[1.1] mb-4 sm:mb-6">
             Learn Smarter.{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
               Remember Longer.
@@ -38,12 +38,12 @@ const Hero = () => {
           </h1>
 
           {/* Subheading */}
-          <p className="text-lg sm:text-xl text-slate-300 font-normal leading-relaxed max-w-3xl mx-auto mb-10">
+          <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-3xl mx-auto mb-8 sm:mb-10">
             Understand your learning abilities, discover your cognitive strengths, and receive a personalized learning strategy designed to improve learning and retention.
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5 mb-16">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
             <a
               href="/start-assessment"
               className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 rounded-xl shadow-lg shadow-purple-600/30 hover:shadow-purple-600/50 transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group"
